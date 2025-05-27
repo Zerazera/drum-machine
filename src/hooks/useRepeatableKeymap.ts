@@ -18,10 +18,15 @@ export function useRepeatableKeymap() {
     const removeRepeatableKeyMapping = (key: string) => {delete keyMapRepeatableKeys.current[key]}
 
     useEffect(() => {
-        const handleKeydown = (event: KeyboardEvent) => (event.key.toUpperCase() in keyMapRepeatableKeys.current) && 
+        const handleKeydown = (event: KeyboardEvent) => {
+            (event.key.toUpperCase() in keyMapRepeatableKeys.current) && 
             keyMapRepeatableKeys.current[event.key.toUpperCase()].keydown()
-        const handleKeyup = (event: KeyboardEvent) => (event.key.toUpperCase() in keyMapRepeatableKeys.current) && 
+        }
+
+        const handleKeyup = (event: KeyboardEvent) => {
+            (event.key.toUpperCase() in keyMapRepeatableKeys.current) && 
             keyMapRepeatableKeys.current[event.key.toUpperCase()].keyup()
+        }
         
         documentRef.current.addEventListener('keydown', handleKeydown)
         documentRef.current.addEventListener('keyup', handleKeyup)
