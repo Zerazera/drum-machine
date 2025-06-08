@@ -17,19 +17,24 @@ export default function VolumeButton({volumeFn, shortcutKey, isDisabled, addRepe
     const clickTimeoutRef = useRef(0)
     const keyboardIntervalRef = useRef(0)
     const keyboardTimeoutRef = useRef(0)
+    const documentRef = useRef(document)
 
     const handleButtonDown = (intervalRef: React.RefObject<number>, timeoutRef: React.RefObject<number>, initialClick = false) => {
         setIsActive(true)
         if (initialClick) buttonRef.current?.click()
 
         timeoutRef.current = setTimeout(() => intervalRef.current = setInterval(() => buttonRef.current?.click(), 100), 500)
+        documentRef.current.addEventListener('mouseup', handleButtonUpClick)
     }
 
     const handleButtonUp = (intervalRef: React.RefObject<number>, timeoutRef: React.RefObject<number>) => {
         setIsActive(false)
         clearTimeout(timeoutRef.current)
         clearInterval(intervalRef.current)
+        documentRef.current.removeEventListener('mouseup', handleButtonUpClick)
     }
+
+    const handleButtonUpClick = () => handleButtonUp(clickIntervalRef, clickTimeoutRef)    
 
     useEffect(() => {
         addRepeatableKeyMapping(shortcutKey, 
@@ -46,7 +51,6 @@ export default function VolumeButton({volumeFn, shortcutKey, isDisabled, addRepe
             disabled={isDisabled}
             ref={buttonRef}
             onMouseDown={() => handleButtonDown(clickIntervalRef, clickTimeoutRef)}
-            onMouseUp={() => handleButtonUp(clickIntervalRef, clickTimeoutRef)}
         >
             {children}
         </PanelButton>
