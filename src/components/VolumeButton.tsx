@@ -24,24 +24,28 @@ export default function VolumeButton({volumeFn, shortcutKey, isDisabled, addRepe
         if (initialClick) buttonRef.current?.click()
 
         timeoutRef.current = setTimeout(() => intervalRef.current = setInterval(() => buttonRef.current?.click(), 100), 500)
-        documentRef.current.addEventListener('mouseup', handleButtonUpClick)
     }
 
     const handleButtonUp = (intervalRef: React.RefObject<number>, timeoutRef: React.RefObject<number>) => {
         setIsActive(false)
         clearTimeout(timeoutRef.current)
         clearInterval(intervalRef.current)
-        documentRef.current.removeEventListener('mouseup', handleButtonUpClick)
-    }
-
-    const handleButtonUpClick = () => handleButtonUp(clickIntervalRef, clickTimeoutRef)    
+    }    
 
     useEffect(() => {
+        const handleButtonUpClick = () => handleButtonUp(clickIntervalRef, clickTimeoutRef)    
+
         addRepeatableKeyMapping(shortcutKey, 
             () => handleButtonDown(keyboardIntervalRef, keyboardTimeoutRef, true), 
-            () => handleButtonUp(keyboardIntervalRef, keyboardTimeoutRef))        
+            () => handleButtonUp(keyboardIntervalRef, keyboardTimeoutRef)
+        )
 
-        return () => removeRepeatableKeyMapping(shortcutKey)
+        documentRef.current.addEventListener('mouseup', handleButtonUpClick)
+
+        return () => {
+            removeRepeatableKeyMapping(shortcutKey)
+            documentRef.current.removeEventListener('mouseup', handleButtonUpClick)
+        }
     }, [])
 
     return (
