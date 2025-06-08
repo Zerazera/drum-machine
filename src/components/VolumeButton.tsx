@@ -11,50 +11,64 @@ type VolumeButtonProps = {
 }
 
 export default function VolumeButton({volumeFn, shortcutKey, isDisabled, addRepeatableKeyMapping, removeRepeatableKeyMapping, children}: VolumeButtonProps) {
-    const [isActive, setIsActive] = useState(false)
-    const buttonRef = useRef<HTMLButtonElement | null>(null)
+    const [clickIsActive, setClickIsActive] = useState(false)
     const clickIntervalRef = useRef(0)
     const clickTimeoutRef = useRef(0)
+
+    const [keyboardIsActive, setKeyboardIsActive] = useState(false)
     const keyboardIntervalRef = useRef(0)
     const keyboardTimeoutRef = useRef(0)
+    
+    const buttonRef = useRef<HTMLButtonElement | null>(null)
     const documentRef = useRef(document)
 
-    const handleButtonDown = (intervalRef: React.RefObject<number>, timeoutRef: React.RefObject<number>, initialClick = false) => {
-        setIsActive(true)
-        if (initialClick) buttonRef.current?.click()
+    const getHandleFns = (
+            setActiveFn: React.Dispatch<React.SetStateAction<boolean>>, 
+            intervalRef: React.RefObject<number>, 
+            timeoutRef: React.RefObject<number>, 
+            initialClick = false
+    ) => {
+        const handleButtonDown = () => {
+            setActiveFn(true)
+            if (initialClick) buttonRef.current?.click()
+            
+            timeoutRef.current = setTimeout(() => intervalRef.current = setInterval(() => buttonRef.current?.click(), 100), 500)
+        }
 
-        timeoutRef.current = setTimeout(() => intervalRef.current = setInterval(() => buttonRef.current?.click(), 100), 500)
+        const handleButtonUp = () => {
+            setActiveFn(false)
+            clearTimeout(timeoutRef.current)
+            clearInterval(intervalRef.current)
+        }
+
+        return {handleButtonDown, handleButtonUp}
+
     }
 
-    const handleButtonUp = (intervalRef: React.RefObject<number>, timeoutRef: React.RefObject<number>) => {
-        setIsActive(false)
-        clearTimeout(timeoutRef.current)
-        clearInterval(intervalRef.current)
-    }    
+    const clickHandlers = getHandleFns(setClickIsActive, clickIntervalRef, clickTimeoutRef)
+    const keyboardHandlers = getHandleFns(setKeyboardIsActive, keyboardIntervalRef, keyboardTimeoutRef, true)
 
     useEffect(() => {
-        const handleButtonUpClick = () => handleButtonUp(clickIntervalRef, clickTimeoutRef)    
-
         addRepeatableKeyMapping(shortcutKey, 
-            () => handleButtonDown(keyboardIntervalRef, keyboardTimeoutRef, true), 
-            () => handleButtonUp(keyboardIntervalRef, keyboardTimeoutRef)
+            keyboardHandlers.handleButtonDown, 
+            keyboardHandlers.handleButtonUp
         )
 
-        documentRef.current.addEventListener('mouseup', handleButtonUpClick)
+        documentRef.current.addEventListener('mouseup', clickHandlers.handleButtonUp)
 
         return () => {
             removeRepeatableKeyMapping(shortcutKey)
-            documentRef.current.removeEventListener('mouseup', handleButtonUpClick)
+            documentRef.current.removeEventListener('mouseup', clickHandlers.handleButtonUp)
         }
     }, [])
 
     return (
         <PanelButton 
-            $isActive={isActive} 
+            $isActive={keyboardIsActive || clickIsActive} 
             onClick={volumeFn}
             disabled={isDisabled}
             ref={buttonRef}
-            onMouseDown={() => handleButtonDown(clickIntervalRef, clickTimeoutRef)}
+            onMouseDown={clickHandlers.handleButtonDown}
         >
             {children}
         </PanelButton>
