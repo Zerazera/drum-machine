@@ -49,10 +49,7 @@ export default function VolumeButton({volumeFn, shortcutKey, isDisabled, addRepe
     const keyboardHandlers = getHandleFns(setKeyboardIsActive, keyboardIntervalRef, keyboardTimeoutRef, true)
 
     useEffect(() => {
-        addRepeatableKeyMapping(shortcutKey, 
-            keyboardHandlers.handleButtonDown, 
-            keyboardHandlers.handleButtonUp
-        )
+        addRepeatableKeyMapping(shortcutKey, keyboardHandlers.handleButtonDown, keyboardHandlers.handleButtonUp)
 
         documentRef.current.addEventListener('mouseup', clickHandlers.handleButtonUp)
 
