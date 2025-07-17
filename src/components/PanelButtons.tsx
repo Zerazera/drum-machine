@@ -24,8 +24,16 @@ const VolumeBank = styled.div`
 const PanelLabel = styled.div`
     display: flex;
     justify-content: center;
-    font-size: calc(0.7 * (1vw + 1vh));
+    font-size: 1rem;
     font-weight: bold;
+
+    @media screen and ((width < 1360px) or (height < 544px)) {
+        font-size: 0.8rem;
+    }
+
+    @media screen and ((width < 680px) or (height < 272px)) {
+        font-size: 0.4rem;
+    }
 `
 
 const PanelGroup = styled.div`

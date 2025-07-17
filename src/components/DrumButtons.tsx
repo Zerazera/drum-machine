@@ -5,8 +5,10 @@ import type { DrumButtonInfoType } from "../drumButtonInfo"
 const StyledDrumButtons = styled.div`
     grid-area: b;
     display: grid;
+    width: 100%;
+    height: 100%;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    row-gap: 5%;
+    gap: 10px 5px;
     font-size: 1.2rem;
 `
 

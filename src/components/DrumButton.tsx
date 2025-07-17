@@ -16,10 +16,10 @@ const StyledDrumButton = styled.button<{$isActive: boolean, $activeColor: string
     --current-color: ${({$isActive}) => $isActive ? 'var(--active-color)' : 'white'};
 
     border-radius: 100px;
-    width: calc(5 * max(1vh, 1vw));
+    width: 120px;
     aspect-ratio: 1 / 1;
     cursor: pointer;
-    font-size: calc(2 * (1vw + 1vh));
+    font-size: 5rem;
     color: var(--current-color);
     border: 2px solid var(--current-color);
     font-weight: bold;
@@ -39,21 +39,39 @@ const StyledDrumButton = styled.button<{$isActive: boolean, $activeColor: string
         border-color: grey;
     }
 
-    @media screen and (width < 400px) {
-        font-size: calc(1.5 * (1vw + 1vh));
-        width: calc(4 * max(1vh, 1vw));
+    @media screen and ((width < 1360px) or (height < 544px)) {
+        width: 90px;
+        font-size: 3.5rem;
+    }
+
+    @media screen and ((width < 1020px) or (height < 408px)) {
+        width: 60px;
+        font-size: 2.3rem;
+    }
+
+    @media screen and ((width < 680px) or (height < 272px)) {
+        width: 35px;
+        font-size: 1.3rem;
     }
 `
 
 const DrumButtonText = styled.div`
-    font-size: calc(0.7 * (1vw + 1vh));
+    width: 100%;
+    display: flex;
+    justify-content: center;
 
-    @media screen and (width < 900px) {
-        font-size: calc(0.6 * (1vw + 1vh));
+    font-size: 1.5rem;
+
+    @media screen and ((width < 1360px) or (height < 544px)) {
+        font-size: 1.3rem;
     }
 
-    @media screen and (width < 450px) {
-        font-size: calc(0.3 * (1vw + 1vh));
+    @media screen and ((width < 1020px) or (height < 408px)) {
+        font-size: 0.89rem;
+    }
+
+    @media screen and ((width < 680px) or (height < 272px)) {
+        font-size: 0.4rem;
     }
 `
 

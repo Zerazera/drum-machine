@@ -8,8 +8,8 @@ import { useKeymap } from "../hooks/useKeymap";
 import { useRepeatableKeymap } from "../hooks/useRepeatableKeymap";
 
 const Machine = styled.div`
-    width: 60%;
-    aspect-ratio: 2 / 1;
+    width: 1360px;
+    aspect-ratio: 1 / 0.4;
     background-color: black;
     color: white;
     padding: 1%;
@@ -24,12 +24,17 @@ const Machine = styled.div`
                          "b .";
     grid-gap: 5% 2%;
 
-    @media screen and ((width < 1100px) and (height > 400px)) {
-        width: 80%;
+    @media screen and ((width < 1360px) or (height < 544px)) {
+        width: 1020px;
     }
 
-    @media screen and ((width < 500px)) {
-        width: 100%;
+    @media screen and ((width < 1020px) or (height < 408px)) {
+        width: 680px;
+    }
+
+    @media screen and ((width < 680px) or (height < 272px)) {
+        width: 340px;
+        aspect-ratio: 1 / 0.5;
     }
 `
 

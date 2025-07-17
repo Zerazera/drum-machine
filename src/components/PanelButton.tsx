@@ -4,7 +4,7 @@ export const PanelButton = styled.button<{$isActive: boolean}>`
     color: ${({$isActive}) => $isActive ? 'white' : 'grey'};
     background-color: black;
     border: none;
-    font-size: calc(2.3 * (1vw + 1vh));
+    font-size: 4rem;
     cursor: pointer;
 
     &:active {
@@ -14,5 +14,13 @@ export const PanelButton = styled.button<{$isActive: boolean}>`
     &:disabled {
         cursor: not-allowed;
         color: grey;
+    }
+
+    @media screen and ((width < 1360px) or (height < 544px)) {
+        font-size: 2.5rem;
+    }
+
+    @media screen and ((width < 680px) or (height < 272px)) {
+        font-size: 1.5rem;
     }
 `

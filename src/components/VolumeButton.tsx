@@ -42,7 +42,6 @@ export default function VolumeButton({volumeFn, shortcutKey, isDisabled, addRepe
         }
 
         return {handleButtonDown, handleButtonUp}
-
     }
 
     const clickHandlers = getHandleFns(setClickIsActive, clickIntervalRef, clickTimeoutRef)
