@@ -7,6 +7,10 @@ const StyledDisplay = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media screen and ((width < 680px) or (height < 272px)) {
+        aspect-ratio: 10 / 3;
+    }
 `
 
 const InnerDisplay = styled.div<{$poweredOn: boolean}>`
